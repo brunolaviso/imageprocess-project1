@@ -2,6 +2,7 @@ package www.View;
 
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
+import javax.swing.JOptionPane;
 import www.Controller.ImageController;
 
 public class index extends javax.swing.JFrame {
@@ -31,10 +32,10 @@ public class index extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblImgProcessada.setText("jLabel3");
+        lblImgProcessada.setText("Imagem Analisada");
         panelProcessada.setViewportView(lblImgProcessada);
 
-        lblImgOriginal.setText("jLabel2");
+        lblImgOriginal.setText("Imagem Original");
         panelOriginal.setViewportView(lblImgOriginal);
 
         btnAbrir.setText("Abrir");
@@ -45,6 +46,11 @@ public class index extends javax.swing.JFrame {
         });
 
         jButton1.setText("Analisar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton1MousePressed(evt);
+            }
+        });
 
         jLabel1.setText("Resultado:");
 
@@ -92,7 +98,6 @@ public class index extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAbrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAbrirMousePressed
-        
         imgOriginal = ij.IJ.openImage();
         imgProcessada = imgOriginal.duplicate();
         
@@ -101,9 +106,18 @@ public class index extends javax.swing.JFrame {
         
         ic.exibeImagemProcessada(ipOriginal, lblImgOriginal);
         ic.exibeImagemProcessada(ipProcessada, lblImgProcessada);
-        
-        
     }//GEN-LAST:event_btnAbrirMousePressed
+
+    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+        
+        if (imgOriginal == null) JOptionPane.showMessageDialog(null, "Abra a imagem antes de fazer a análise."); 
+        else {
+                
+        }
+
+        // REALIZAR PROCESSOS PARA DESCOBRIR SE O COPO ESTA CHEIO
+        // EXIBIR NA LABEL lblResultado SE O COPO ESTA CHEIO OU VAZIO
+    }//GEN-LAST:event_jButton1MousePressed
 
     /**
      * @param args the command line arguments

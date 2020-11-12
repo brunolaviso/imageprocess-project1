@@ -72,7 +72,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblImgProcessada">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel3"/>
+            <Property name="text" type="java.lang.String" value="Imagem Analisada"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -83,7 +83,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblImgOriginal">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel2"/>
+            <Property name="text" type="java.lang.String" value="Imagem Original"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -100,6 +100,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Analisar"/>
       </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton1MousePressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
