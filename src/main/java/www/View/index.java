@@ -1,7 +1,11 @@
 package www.View;
 
 import ij.ImagePlus;
+import ij.plugin.ContrastEnhancer;
+import ij.plugin.filter.GaussianBlur;
+import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
+import ij.process.ImageStatistics;
 import javax.swing.JOptionPane;
 import www.Controller.ImageController;
 
@@ -12,8 +16,8 @@ public class index extends javax.swing.JFrame {
     ImageProcessor ipOriginal;
     ImageProcessor ipProcessada;
     ImageController ic = new ImageController();
-    int contador=0;
-    
+    int contador = 0;
+
     public index() {
         initComponents();
     }
@@ -56,10 +60,10 @@ public class index extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Resultado:");
 
-        lblResultado.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        lblResultado.setText("O copo está cheio");
+        lblResultado.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
 
         btnSalvar.setText("Salvar");
         btnSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -85,8 +89,8 @@ public class index extends javax.swing.JFrame {
                         .addGap(37, 37, 37)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(274, 274, 274)
+                        .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(141, 141, 141)
                         .addComponent(btnSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
@@ -115,30 +119,47 @@ public class index extends javax.swing.JFrame {
     private void btnAbrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAbrirMousePressed
         imgOriginal = ij.IJ.openImage();
         imgProcessada = imgOriginal.duplicate();
-        
+
+        ImageConverter i8bits = new ImageConverter(imgProcessada);
+        i8bits.convertToGray8();
+        imgProcessada.updateAndDraw();
+
         ipOriginal = imgOriginal.getProcessor();
         ipProcessada = imgProcessada.getProcessor();
-        
+
         ic.exibeImagemProcessada(ipOriginal, lblImgOriginal);
         ic.exibeImagemProcessada(ipProcessada, lblImgProcessada);
     }//GEN-LAST:event_btnAbrirMousePressed
 
     private void btnAnalisarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAnalisarMousePressed
-        
-        if (imgOriginal == null) JOptionPane.showMessageDialog(null, "Abra a imagem antes de fazer a análise."); 
-        else {
-                
-        }
 
-        // REALIZAR PROCESSOS PARA DESCOBRIR SE O COPO ESTA CHEIO
-        // EXIBIR NA LABEL lblResultado SE O COPO ESTA CHEIO OU VAZIO
+        if (imgOriginal == null) {
+            JOptionPane.showMessageDialog(null, "Abra a imagem antes de fazer a análise.");
+        } else {
+
+            ContrastEnhancer ce = new ContrastEnhancer();
+            //ce.equalize(ipProcessada);
+
+            GaussianBlur gb = new GaussianBlur();
+            gb.blur(ipProcessada, 5);
+            ipProcessada.autoThreshold();
+            ic.exibeImagemProcessada(ipProcessada, lblImgProcessada);
+            ipProcessada.invert();
+            ImageStatistics imagemEstat = new ImageStatistics();
+            double Mean = ipProcessada.getStatistics().mean;
+            
+            if (Mean < 85) lblResultado.setText("Copo Vazio");
+            else if ((Mean > 85) && (Mean < 100)) lblResultado.setText("Copo Parcialmente Cheio");
+            else lblResultado.setText("Copo Cheio");
+            
+        }
     }//GEN-LAST:event_btnAnalisarMousePressed
 
     private void btnSalvarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarMousePressed
         contador++;
-        ij.IJ.save(imgProcessada, "Imagem_Processada"+contador+".png");
+        ij.IJ.save(imgProcessada, "Imagem_Processada" + contador + ".png");
         JOptionPane.showMessageDialog(this, "Imagem Salva com Sucesso!");
-        
+
     }//GEN-LAST:event_btnSalvarMousePressed
 
     /**
