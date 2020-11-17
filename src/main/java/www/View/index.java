@@ -136,22 +136,34 @@ public class index extends javax.swing.JFrame {
         if (imgOriginal == null) {
             JOptionPane.showMessageDialog(null, "Abra a imagem antes de fazer a análise.");
         } else {
-
-            ContrastEnhancer ce = new ContrastEnhancer();
-            //ce.equalize(ipProcessada);
-
             GaussianBlur gb = new GaussianBlur();
             gb.blur(ipProcessada, 5);
+            
             ipProcessada.autoThreshold();
+            
             ic.exibeImagemProcessada(ipProcessada, lblImgProcessada);
+            
             ipProcessada.invert();
-            ImageStatistics imagemEstat = new ImageStatistics();
+            
             double Mean = ipProcessada.getStatistics().mean;
             
-            if (Mean < 85) lblResultado.setText("Copo Vazio");
-            else if ((Mean > 85) && (Mean < 100)) lblResultado.setText("Copo Parcialmente Cheio");
-            else lblResultado.setText("Copo Cheio");
+            String msgResultado;
             
+            if (Mean < 85) {
+                msgResultado = "Copo Vazio";
+                lblResultado.setText(msgResultado);
+                JOptionPane.showMessageDialog(null, msgResultado);
+            }
+            else if ((Mean > 85) && (Mean < 100)) {
+                msgResultado = "Copo Parcialmente Cheio";
+                lblResultado.setText(msgResultado);
+                JOptionPane.showMessageDialog(null, msgResultado);
+            }
+            else {
+                msgResultado = "Copo Cheio";
+                lblResultado.setText(msgResultado);
+                JOptionPane.showMessageDialog(null, msgResultado);
+            }
         }
     }//GEN-LAST:event_btnAnalisarMousePressed
 
@@ -159,7 +171,6 @@ public class index extends javax.swing.JFrame {
         contador++;
         ij.IJ.save(imgProcessada, "Imagem_Processada" + contador + ".png");
         JOptionPane.showMessageDialog(this, "Imagem Salva com Sucesso!");
-
     }//GEN-LAST:event_btnSalvarMousePressed
 
     /**

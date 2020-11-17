@@ -26,5 +26,4 @@ public class ImageController {
         label.setText(null);
         label.setIcon(new ImageIcon(iplusThumbnail.getBufferedImage()));
     }
-    
 }
