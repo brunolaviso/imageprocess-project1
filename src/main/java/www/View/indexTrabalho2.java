@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package www.View;
 
 import java.io.File;
@@ -12,16 +7,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import www.Controller.ImageController;
 
-/**
- *
- * @author laviso
- */
 public class indexTrabalho2 extends javax.swing.JFrame {
 
-    /**
-     * Creates new form indexTrabalho2
-     */
-    
     double meanMediano;
     String[] PathImgs = new String[62];
     ImageController ic = new ImageController();
@@ -114,10 +101,11 @@ public class indexTrabalho2 extends javax.swing.JFrame {
                 .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblMean, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private String verificarQtdsDedos() {
