@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import javax.swing.JOptionPane;
 import www.Controller.ImageController;
-import www.Controller.ReconhecendoDedos;
 
 /**
  *
@@ -23,7 +22,6 @@ public class indexTrabalho2 extends javax.swing.JFrame {
      * Creates new form indexTrabalho2
      */
     
-    ReconhecendoDedos rd = new ReconhecendoDedos();
     double meanMediano;
     String[] PathImgs = new String[62];
     ImageController ic = new ImageController();
@@ -31,7 +29,7 @@ public class indexTrabalho2 extends javax.swing.JFrame {
     
     public indexTrabalho2() {
         initComponents();
-        meanMediano = rd.carregarImagens();
+        meanMediano = ic.calcularMeanMediano();
         
         for (int i = 1; i <= 30; i++) {
             PathImgs[i] = new File(String.format("assets/1/1 dedo/d - %d.png", i)).getPath();
@@ -40,22 +38,15 @@ public class indexTrabalho2 extends javax.swing.JFrame {
         for (int i = 1; i <= 30; i++) {
             PathImgs[i+30] = new File(String.format("assets/3/3 dedos/d - %d.png", i)).getPath();
         }
-        
-        /*
-        List<String> intList = Arrays.asList(PathImgs);
-        Collections.shuffle(intList);
-        intList.toArray(PathImgs);
-        
-        for (int i = 1; i <= 60; i++) {
-            System.out.println(PathImgs[i]);
-        }
-        */
 
         ic.exibeImagemProcessada(ij.IJ.openImage(PathImgs[j]).getProcessor(), lblImg);
         
         System.out.println(meanMediano);
         System.out.println(PathImgs[0]);
         System.out.println(PathImgs[61]);
+        
+        lblResultado.setText(verificarQtdsDedos());
+        lblMean.setText(String.valueOf(ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean));
     }
 
     /**
@@ -71,6 +62,7 @@ public class indexTrabalho2 extends javax.swing.JFrame {
         btnVoltar = new javax.swing.JButton();
         btnAvancar = new javax.swing.JButton();
         lblResultado = new javax.swing.JLabel();
+        lblMean = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,7 +97,9 @@ public class indexTrabalho2 extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblMean, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(234, 234, 234))
         );
         layout.setVerticalGroup(
@@ -118,16 +112,18 @@ public class indexTrabalho2 extends javax.swing.JFrame {
                     .addComponent(btnAvancar, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lblMean, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private String verificarQtdsDedos(double mean) {
+    private String verificarQtdsDedos() {
         String msg = "";
         
-        if (mean < meanMediano) msg = "1 Dedo";
+        if ((ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean) < meanMediano) msg = "1 Dedo";
         else msg = "3 Dedos";
         
         return(msg);
@@ -138,8 +134,8 @@ public class indexTrabalho2 extends javax.swing.JFrame {
         if (PathImgs[j + 1] != null) {
             j++;
             ic.exibeImagemProcessada(ij.IJ.openImage(PathImgs[j]).getProcessor(), lblImg);
-            //double mean = obterMean();
-            //verificarQtdsDedos(mean);
+            lblResultado.setText(verificarQtdsDedos());
+            lblMean.setText(String.valueOf(ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean));
         }
         else JOptionPane.showMessageDialog(null, "Erro! Não existe mais imagem");
         
@@ -150,6 +146,8 @@ public class indexTrabalho2 extends javax.swing.JFrame {
         if (PathImgs[j - 1] != null) {
             j--;
             ic.exibeImagemProcessada(ij.IJ.openImage(PathImgs[j]).getProcessor(), lblImg);
+            lblResultado.setText(verificarQtdsDedos());
+            lblMean.setText(String.valueOf(ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean));
         }
         else JOptionPane.showMessageDialog(null, "Erro! Não existe mais imagem");
     }//GEN-LAST:event_btnVoltarMousePressed
@@ -193,6 +191,7 @@ public class indexTrabalho2 extends javax.swing.JFrame {
     private javax.swing.JButton btnAvancar;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JLabel lblImg;
+    private javax.swing.JLabel lblMean;
     private javax.swing.JLabel lblResultado;
     // End of variables declaration//GEN-END:variables
 }
