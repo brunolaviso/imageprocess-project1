@@ -128,7 +128,7 @@ public class index extends javax.swing.JFrame {
         ipProcessada = imgProcessada.getProcessor();
 
         ic.exibeImagemProcessada(ipOriginal, lblImgOriginal);
-        ic.exibeImagemProcessada(ipProcessada, lblImgProcessada);
+        ic.exibeImagemProcessada(ipOriginal, lblImgProcessada);
     }//GEN-LAST:event_btnAbrirMousePressed
 
     private void btnAnalisarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAnalisarMousePressed

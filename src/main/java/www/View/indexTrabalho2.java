@@ -5,6 +5,14 @@
  */
 package www.View;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.JOptionPane;
+import www.Controller.ImageController;
+import www.Controller.ReconhecendoDedos;
+
 /**
  *
  * @author laviso
@@ -14,8 +22,40 @@ public class indexTrabalho2 extends javax.swing.JFrame {
     /**
      * Creates new form indexTrabalho2
      */
+    
+    ReconhecendoDedos rd = new ReconhecendoDedos();
+    double meanMediano;
+    String[] PathImgs = new String[62];
+    ImageController ic = new ImageController();
+    int j = 1;
+    
     public indexTrabalho2() {
         initComponents();
+        meanMediano = rd.carregarImagens();
+        
+        for (int i = 1; i <= 30; i++) {
+            PathImgs[i] = new File(String.format("assets/1/1 dedo/d - %d.png", i)).getPath();
+        }
+        
+        for (int i = 1; i <= 30; i++) {
+            PathImgs[i+30] = new File(String.format("assets/3/3 dedos/d - %d.png", i)).getPath();
+        }
+        
+        /*
+        List<String> intList = Arrays.asList(PathImgs);
+        Collections.shuffle(intList);
+        intList.toArray(PathImgs);
+        
+        for (int i = 1; i <= 60; i++) {
+            System.out.println(PathImgs[i]);
+        }
+        */
+
+        ic.exibeImagemProcessada(ij.IJ.openImage(PathImgs[j]).getProcessor(), lblImg);
+        
+        System.out.println(meanMediano);
+        System.out.println(PathImgs[0]);
+        System.out.println(PathImgs[61]);
     }
 
     /**
@@ -27,21 +67,92 @@ public class indexTrabalho2 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblImg = new javax.swing.JLabel();
+        btnVoltar = new javax.swing.JButton();
+        btnAvancar = new javax.swing.JButton();
+        lblResultado = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblImg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblImg.setText("Imagem");
+
+        btnVoltar.setText("<<<");
+        btnVoltar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnVoltarMousePressed(evt);
+            }
+        });
+
+        btnAvancar.setText(">>>");
+        btnAvancar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnAvancarMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnAvancar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(234, 234, 234))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAvancar, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
+                .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private String verificarQtdsDedos(double mean) {
+        String msg = "";
+        
+        if (mean < meanMediano) msg = "1 Dedo";
+        else msg = "3 Dedos";
+        
+        return(msg);
+    }
+    
+    private void btnAvancarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvancarMousePressed
+    
+        if (PathImgs[j + 1] != null) {
+            j++;
+            ic.exibeImagemProcessada(ij.IJ.openImage(PathImgs[j]).getProcessor(), lblImg);
+            //double mean = obterMean();
+            //verificarQtdsDedos(mean);
+        }
+        else JOptionPane.showMessageDialog(null, "Erro! Não existe mais imagem");
+        
+    }//GEN-LAST:event_btnAvancarMousePressed
+
+    private void btnVoltarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVoltarMousePressed
+
+        if (PathImgs[j - 1] != null) {
+            j--;
+            ic.exibeImagemProcessada(ij.IJ.openImage(PathImgs[j]).getProcessor(), lblImg);
+        }
+        else JOptionPane.showMessageDialog(null, "Erro! Não existe mais imagem");
+    }//GEN-LAST:event_btnVoltarMousePressed
 
     /**
      * @param args the command line arguments
@@ -79,5 +190,9 @@ public class indexTrabalho2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvancar;
+    private javax.swing.JButton btnVoltar;
+    private javax.swing.JLabel lblImg;
+    private javax.swing.JLabel lblResultado;
     // End of variables declaration//GEN-END:variables
 }
