@@ -32,8 +32,9 @@ public class indexTrabalho2 extends javax.swing.JFrame {
         System.out.println(PathImgs[0]);
         System.out.println(PathImgs[61]);
         
-        lblResultado.setText(verificarQtdsDedos());
-        lblMean.setText(String.valueOf(ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean));
+        lblResultado.setText(ic.verificarQtdsDedos(ij.IJ.openImage(PathImgs[j])));
+        lblMean.setText("Mean: " + String.valueOf(ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean));
+        lblPorcentagem.setText(ic.calcularPorcentagem());
     }
 
     /**
@@ -50,6 +51,7 @@ public class indexTrabalho2 extends javax.swing.JFrame {
         btnAvancar = new javax.swing.JButton();
         lblResultado = new javax.swing.JLabel();
         lblMean = new javax.swing.JLabel();
+        lblPorcentagem = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,60 +72,62 @@ public class indexTrabalho2 extends javax.swing.JFrame {
             }
         });
 
+        lblResultado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lblMean.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lblPorcentagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnAvancar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblMean, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(234, 234, 234))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(231, 231, 231)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblMean, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblPorcentagem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblImg, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAvancar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(88, 88, 88)
+                .addGap(39, 39, 39)
+                .addComponent(lblPorcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAvancar, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
+                .addGap(18, 18, 18)
                 .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblMean, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private String verificarQtdsDedos() {
-        String msg = "";
-        
-        if ((ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean) < meanMediano) msg = "1 Dedo";
-        else msg = "3 Dedos";
-        
-        return(msg);
-    }
-    
+   
     private void btnAvancarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvancarMousePressed
     
         if (PathImgs[j + 1] != null) {
             j++;
             ic.exibeImagemProcessada(ij.IJ.openImage(PathImgs[j]).getProcessor(), lblImg);
-            lblResultado.setText(verificarQtdsDedos());
-            lblMean.setText(String.valueOf(ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean));
+            lblResultado.setText(ic.verificarQtdsDedos(ij.IJ.openImage(PathImgs[j])));
+            lblMean.setText("Mean: " + String.valueOf(ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean));
         }
         else JOptionPane.showMessageDialog(null, "Erro! Não existe mais imagem");
         
@@ -134,8 +138,8 @@ public class indexTrabalho2 extends javax.swing.JFrame {
         if (PathImgs[j - 1] != null) {
             j--;
             ic.exibeImagemProcessada(ij.IJ.openImage(PathImgs[j]).getProcessor(), lblImg);
-            lblResultado.setText(verificarQtdsDedos());
-            lblMean.setText(String.valueOf(ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean));
+            lblResultado.setText(ic.verificarQtdsDedos(ij.IJ.openImage(PathImgs[j])));
+            lblMean.setText("Mean: " + String.valueOf(ic.processarImagem(ij.IJ.openImage(PathImgs[j])).getStatistics().mean));
         }
         else JOptionPane.showMessageDialog(null, "Erro! Não existe mais imagem");
     }//GEN-LAST:event_btnVoltarMousePressed
@@ -180,6 +184,7 @@ public class indexTrabalho2 extends javax.swing.JFrame {
     private javax.swing.JButton btnVoltar;
     private javax.swing.JLabel lblImg;
     private javax.swing.JLabel lblMean;
+    private javax.swing.JLabel lblPorcentagem;
     private javax.swing.JLabel lblResultado;
     // End of variables declaration//GEN-END:variables
 }
